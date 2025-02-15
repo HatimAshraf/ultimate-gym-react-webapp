@@ -5,3 +5,15 @@
 * {
   font-family: 'poppins', sans-serif;
 }
+span {
+  font-family: inherit;
+  font-weight: inherit;
+}
+.emeraldShadow {
+  box-shadow: 3px 3px 0 0 #069668;
+}
+
+.emeraldShadow:hover {
+  transform: translate(-3px -3px);
+  box-shadow: 8px 6px 0 0 #069668;
+}

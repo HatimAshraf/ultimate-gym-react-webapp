@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Hero = () => {
   return (
     <div className='min-h-screen flex flex-col justify-center items-center gap-10 text-center max-w-[800px] w-full mx-auto p-4'>
@@ -22,7 +20,7 @@ const Hero = () => {
         </span>{' '}
         comes with great power—and even bigger muscles!
       </p>
-      <button className='px-8 py-4 rounded-md border border-emerald-600 border-solid hover:border-emerald-200'>
+      <button className='px-8 py-4 rounded-md border-[2px] border-emerald-600 border-solid emeraldShadow duration-200'>
         <p>Accept and Continue</p>
       </button>
     </div>

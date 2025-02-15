@@ -1,6 +1,6 @@
 import Generator from './components/Generator';
 import Hero from './components/Hero';
-import { Workout } from './components/Workout';
+import Workout from './components/Workout';
 
 const App = () => {
   return (
