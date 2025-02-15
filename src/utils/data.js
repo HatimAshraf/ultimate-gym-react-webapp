@@ -58,15 +58,6 @@ export const WORKOUTS = {
   },
 };
 
-//write a function that flattens this thing with all the variants
-//if athome, then have to specify equipment (if required otherwise bodyweight)
-//add instructions for substitutions (at home substitutions) for weights etc
-//variant is just going to be gym (forget about home stuff as long as one of the variants is
-//make it so that you can't get the same varient in a single workout (maybe)
-//add all the other variants to the subsubstitute list
-//pick a random exercise
-//for non-members, exclude all the at home specific exercises (anything particularly pussy like a lot of the bodyweight stuff)
-
 export const EXERCISES = {
   barbell_bench_press: {
     type: 'compound',
@@ -213,40 +204,7 @@ export const EXERCISES = {
       'When in the dip position, ensure you are leaning forward over your hands and slowly lower your body until your elbows are parallel with the ground. Then press back up. Keep your elbow flare to a maximum of 45 degrees.',
     substitutes: ['Chair dip'],
   },
-  // incline_barbell_bench: {
-  //     type: 'compound',
-  //     meta: {
-  //         environment: 'gymhome',
-  //         level: [0, 1, 2],
-  //         equipment: []
-  //     },
-  //     variants: {
-  //         incline: 'Press your hands away from you at a 45 degree angle above horizontal.',
-  //         horizontal: 'Press your hands away from you at a 45 degree angle from horizontal.',
-  //         decline: 'Press your hands away from you at a -30 degree angle below horizontal.'
-  //     },
-  //     unit: 'reps', //vs duration
-  //     muscles: ['chest'],
-  //     description: 'With a bench inclined between 30 and 45 degrees, hold the bar directly above your chest. With your scapula retracted, lower the bar keeping elbows to a maximum 45 degree flare, until the bar touches your chest. Then press back up.',
-  //     substitutes: ['inclined dumbbell press', 'inclined pushup']
-  // },
-  // incline_dumbbell_bench: {
-  //     type: 'compound',
-  //     meta: {
-  //         environment: 'gymhome',
-  //         level: [0, 1, 2],
-  //         equipment: []
-  //     },
-  //     variants: {
-  //         incline: 'Press your hands away from you at a 45 degree angle above horizontal.',
-  //         horizontal: 'Press your hands away from you at a 45 degree angle from horizontal.',
-  //         decline: 'Press your hands away from you at a -30 degree angle below horizontal.'
-  //     },
-  //     unit: 'reps', //vs duration
-  //     muscles: ['chest'],
-  //     description: 'With a bench inclined between 30 and 45 degrees, hold the dumbbells directly above your chest. With your scapula retracted, lower the dumbells keeping elbows to a maximum 45 degree flare, until your thumbs touch your nipples. Then press back up.',
-  //     substitutes: ['inclined dumbbell press', 'inclined pushup']
-  // },
+
   dumbbell_bench_press: {
     type: 'compound',
     meta: {
@@ -2005,9 +1963,3 @@ export const EXERCISES = {
     substitutes: ['plank', 'leg_lifts'],
   },
 };
-
-// module.exports = { tempos, workouts, exercises, schemes }
-//info page
-//tempos
-//rep ranges
-//warmup
