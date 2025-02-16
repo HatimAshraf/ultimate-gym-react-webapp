@@ -5,9 +5,32 @@ import { useState } from 'react';
 
 const Generator = () => {
   const [dropdownModal, setdropdownModal] = useState(false);
-  const [selectedWorkout, setSelectedWorkout] = useState('individual');
-  const [selectedMuscles, setSelectedMuscles] = useState([]);
-  const [selectedGoals, setSelectedGoals] = useState('strength_power');
+  const [show, setshow] = useState(false);
+  const [poison, setpoison] = useState('individual');
+  const [muscles, setmuscles] = useState([]);
+  const [goal, setgoal] = useState('strength_power');
+
+  function updateMuscles(muscleGroup) {
+    if (muscles.includes(muscleGroup)) {
+      setmuscles(muscles.filter((val) => val !== muscleGroup));
+      return;
+    }
+
+    if (muscles.length > 2) {
+      return;
+    }
+
+    if (poison !== 'individual') {
+      setmuscles([muscleGroup]);
+      setdropdownModal(false);
+      return;
+    }
+
+    setmuscles([...muscles, muscleGroup]);
+    if (muscles.length === 2) {
+      setdropdownModal(false);
+    }
+  }
 
   const handleDropdownMenu = () => {
     setdropdownModal(!dropdownModal);
@@ -27,12 +50,12 @@ const Generator = () => {
           return (
             <button
               onClick={() => {
-                setSelectedWorkout(type);
+                setpoison(type);
                 // setdropdownModal(false);
               }}
               className={
                 'bg-emerald-950 rounded-md p-4 ' +
-                (type === selectedWorkout ? 'border border-emerald-400' : '')
+                (type === poison ? 'border border-emerald-400' : '')
               }
               key={typeIndex}
             >
@@ -41,6 +64,7 @@ const Generator = () => {
           );
         })}
       </div>
+
       <Header
         index={'02'}
         title={'Lock on targets'}
@@ -56,11 +80,20 @@ const Generator = () => {
         </div>
         {dropdownModal && (
           <div className='flex flex-col px-3 pb-3'>
-            {(selectedWorkout === 'individual'
-              ? WORKOUTS[selectedWorkout]
-              : Object.keys(WORKOUTS[selectedWorkout])).map(muscles,musclesindex) =>{
-                
-              }}
+            {(poison === 'individual'
+              ? Object.values(WORKOUTS[poison])
+              : Object.keys(WORKOUTS[poison])
+            ).map((muscleGroup, muscleGroupindex) => {
+              return (
+                <button
+                  onClick={() => updateMuscles(muscleGroup)}
+                  key={muscleGroupindex}
+                  className='my-2 uppercase hover:text-emerald-400'
+                >
+                  <p>{muscleGroup.replaceAll('_', ' ')}</p>
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -74,12 +107,12 @@ const Generator = () => {
           return (
             <button
               onClick={() => {
-                setSelectedGoals(scheme);
+                setgoal(scheme);
                 // setdropdownModal(false);
               }}
               className={
                 'bg-emerald-950 rounded-md p-4 ' +
-                (scheme === selectedGoals ? 'border border-emerald-400' : '')
+                (scheme === goal ? 'border border-emerald-400' : '')
               }
               key={schemeIndex}
             >
