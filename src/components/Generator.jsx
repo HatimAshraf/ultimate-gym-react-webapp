@@ -1,18 +1,44 @@
+import React, { useState } from 'react';
 import SectionWrapper from './SectionWrapper';
-import Header from './Header';
-import { SCHEMES, WORKOUTS } from '../utils/data.js';
-import { useState } from 'react';
+import { SCHEMES, WORKOUTS } from '../utils/data';
+import Button from './Button';
 
-const Generator = () => {
-  const [dropdownModal, setdropdownModal] = useState(false);
-  const [show, setshow] = useState(false);
-  const [poison, setpoison] = useState('individual');
-  const [muscles, setmuscles] = useState([]);
-  const [goal, setgoal] = useState('strength_power');
+function Header(props) {
+  const { index, title, description } = props;
+  return (
+    <div className='flex flex-col gap-4'>
+      <div className='flex items-center justify-center gap-2'>
+        <p className='text-3xl sm:text-4xl md:text-5xl font-semibold text-emerald-400'>
+          {index}
+        </p>
+        <h4 className='text-xl sm:text-2xl md:text-3xl'>{title}</h4>
+      </div>
+      <p className='text-sm sm:text-base mx-auto'>{description}</p>
+    </div>
+  );
+}
+
+export default function Generator(props) {
+  const {
+    muscles,
+    setMuscles,
+    poison,
+    setPoison,
+    goal,
+    setGoal,
+    updateWorkout,
+  } = props;
+  const [showModal, setShowModal] = useState(false);
+
+  // let showModal = false
+
+  function toggleModal() {
+    setShowModal(!showModal);
+  }
 
   function updateMuscles(muscleGroup) {
     if (muscles.includes(muscleGroup)) {
-      setmuscles(muscles.filter((val) => val !== muscleGroup));
+      setMuscles(muscles.filter((val) => val !== muscleGroup));
       return;
     }
 
@@ -21,76 +47,84 @@ const Generator = () => {
     }
 
     if (poison !== 'individual') {
-      setmuscles([muscleGroup]);
-      setdropdownModal(false);
+      setMuscles([muscleGroup]);
+      setShowModal(false);
       return;
     }
 
-    setmuscles([...muscles, muscleGroup]);
+    setMuscles([...muscles, muscleGroup]);
     if (muscles.length === 2) {
-      setdropdownModal(false);
+      setShowModal(false);
     }
   }
 
-  const handleDropdownMenu = () => {
-    setdropdownModal(!dropdownModal);
-  };
   return (
     <SectionWrapper
-      header={"Let's Hulkify Your Workout"}
-      title={['The clock says ', "It's", ' Hulk Mode']}
+      id={'gene'}
+      header={'generate your workout'}
+      title={["It's", 'Huge', "o'clock"]}
     >
       <Header
         index={'01'}
-        title={'Pick your exercise'}
-        description={'Select the Workout'}
+        title={'Pick your poison'}
+        description={'Select the workout you wish to endure.'}
       />
-      <div className='grid grid-cols-3 sm:grid-cols-4 gap-4'>
+      <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
         {Object.keys(WORKOUTS).map((type, typeIndex) => {
           return (
             <button
               onClick={() => {
-                setpoison(type);
-                // setdropdownModal(false);
+                setMuscles([]);
+                setPoison(type);
               }}
               className={
-                'bg-emerald-950 rounded-md p-4 ' +
+                'bg-emerald-950 px-4 py-3 rounded-lg ' +
                 (type === poison ? 'border border-emerald-400' : '')
               }
               key={typeIndex}
             >
-              {type.replaceAll('_', ' ')}
+              <p className='capitalize'>{type.replaceAll('_', ' ')}</p>
             </button>
           );
         })}
       </div>
-
-      <Header
-        index={'02'}
-        title={'Lock on targets'}
-        description={'Select the Muscles judged for annihilation'}
-      />
-      <div className='bg-emerald-950 border border-solid border-emerald-400 rounded-md flex flex-col'>
-        <div
-          onClick={handleDropdownMenu}
-          className='relative flex items-center justify-center py-4'
+      {poison && (
+        <Header
+          index={'02'}
+          title={'Lock on targets'}
+          description={'Select the muscles judged for annihilation.'}
+        />
+      )}
+      <div className='bg-emerald-950  border border-solid border-emerald-400 rounded-lg flex flex-col'>
+        <button
+          onClick={toggleModal}
+          className='relative p-3 flex items-center justify-center'
         >
-          <p>Select muscle groups</p>
-          <i className='fa-solid fa-caret-down absolute right-3 top-1/2 -translate-y-1/2'></i>
-        </div>
-        {dropdownModal && (
+          <p className='capitalize'>
+            {muscles.length == 0 ? 'Select muscle groups' : muscles.join(' ')}
+          </p>
+          <i className='fa-solid absolute right-3 top-1/2 -translate-y-1/2 fa-caret-down'></i>
+        </button>
+        {showModal && (
           <div className='flex flex-col px-3 pb-3'>
             {(poison === 'individual'
-              ? Object.values(WORKOUTS[poison])
+              ? WORKOUTS[poison]
               : Object.keys(WORKOUTS[poison])
-            ).map((muscleGroup, muscleGroupindex) => {
+            ).map((muscleGroup, muscleGroupIndex) => {
               return (
                 <button
-                  onClick={() => updateMuscles(muscleGroup)}
-                  key={muscleGroupindex}
-                  className='my-2 uppercase hover:text-emerald-400'
+                  onClick={() => {
+                    updateMuscles(muscleGroup);
+                  }}
+                  key={muscleGroupIndex}
+                  className={
+                    'hover:text-emerald-400 duration-200 ' +
+                    (muscles.includes(muscleGroup) ? ' text-emerald-400' : ' ')
+                  }
                 >
-                  <p>{muscleGroup.replaceAll('_', ' ')}</p>
+                  <p className='uppercase'>
+                    {muscleGroup.replaceAll('_', ' ')}
+                  </p>
                 </button>
               );
             })}
@@ -99,30 +133,28 @@ const Generator = () => {
       </div>
       <Header
         index={'03'}
-        title={'Become juggernaut'}
+        title={'Become Juggernaut'}
         description={'Select your ultimate objective.'}
       />
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
         {Object.keys(SCHEMES).map((scheme, schemeIndex) => {
           return (
             <button
               onClick={() => {
-                setgoal(scheme);
-                // setdropdownModal(false);
+                setGoal(scheme);
               }}
               className={
-                'bg-emerald-950 rounded-md p-4 ' +
-                (scheme === goal ? 'border border-emerald-400' : '')
+                'bg-emerald-950 py-3 rounded-lg px-4 ' +
+                (scheme === goal ? ' border border-emerald-400' : ' ')
               }
               key={schemeIndex}
             >
-              {scheme.replaceAll('_', ' ')}
+              <p className='capitalize'>{scheme.replaceAll('_', ' ')}</p>
             </button>
           );
         })}
       </div>
+      <Button func={updateWorkout} text={'Formulate'}></Button>
     </SectionWrapper>
   );
-};
-
-export default Generator;
+}
